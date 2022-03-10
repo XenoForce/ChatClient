@@ -1,0 +1,3 @@
+ChatUserNameOrAlias=Solaco
+ServerNameOrAddress=localhost
+ServerPort=1234
