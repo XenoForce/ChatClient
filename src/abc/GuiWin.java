@@ -33,8 +33,24 @@ public class GuiWin extends JFrame {
     
     initComponents();
     
+    // List of Contacts:
+    
     ListModel<String> lstModel = new ContactListModel( arrContact );
     nameList.setModel( lstModel );
+    
+    // Trap when ENTER key is pressed:
+    
+    FreshTextEnterAction freshTextEnterAction = new FreshTextEnterAction( sndSock, freshText, history );
+    
+    InputMap  iMap = freshText.getInputMap( freshText.WHEN_FOCUSED );
+    ActionMap aMap = freshText.getActionMap();
+    
+    iMap.put( KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0 ), "onEnter");
+    aMap.put("onEnter", freshTextEnterAction );
+    
+    //
+    
+    
     
     
   } //Constructor
