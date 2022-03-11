@@ -13,6 +13,7 @@ public class GuiWin extends JFrame {
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
   private Connection    dbCon      ;
+  private String        chatUser   ;
   private List<String>  arrContact ;
   private Socket        rcvSock    ;
   private Socket        sndSock    ;
@@ -22,11 +23,13 @@ public class GuiWin extends JFrame {
   //  Constructor                                                            //
   //-------------------------------------------------------------------------//
   public GuiWin( Connection    dbConnection ,
+                 String        theChatUser  ,
                  List<String>  contactList  ,
                  Socket        receiveSock  ,
                  Socket        sendSock ) {
     
     dbCon      = dbConnection ;
+    chatUser   = theChatUser  ;
     arrContact = contactList  ;
     rcvSock    = receiveSock  ;
     sndSock    = sendSock     ;
@@ -40,7 +43,7 @@ public class GuiWin extends JFrame {
     
     // Trap when ENTER key is pressed:
     
-    FreshTextEnterAction freshTextEnterAction = new FreshTextEnterAction( sndSock, freshText, history );
+    FreshTextEnterAction freshTextEnterAction = new FreshTextEnterAction( dbCon, sndSock, freshText, history );
     
     InputMap  iMap = freshText.getInputMap( freshText.WHEN_FOCUSED );
     ActionMap aMap = freshText.getActionMap();
@@ -82,6 +85,7 @@ public class GuiWin extends JFrame {
 
     history.setEditable(false);
     history.setColumns(20);
+    history.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
     history.setRows(5);
     history.setName(""); // NOI18N
     jScrollPane2.setViewportView(history);

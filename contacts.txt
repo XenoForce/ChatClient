@@ -1,3 +1,6 @@
 Contact1=Raka
+Colour_1=Green
 Contact2=Eileen
+Colour_2=Red
 Contact3=Jaco
+Colour_3=Blue

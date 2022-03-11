@@ -2,6 +2,7 @@ package abc;
 
 import java.awt.event.ActionEvent;
 import java.net.Socket;
+import java.sql.Connection;
 import javax.swing.*;
 
 
@@ -10,20 +11,23 @@ public class FreshTextEnterAction extends AbstractAction {
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  private Socket     sndSock   ;
-  private JTextArea  freshText ;
-  private JTextArea  history   ;
+  private Connection  dbCon     ;
+  private Socket      sndSock   ;
+  private JTextArea   freshText ;
+  private JTextArea   history   ;
   
   
   //-------------------------------------------------------------------------//
   //  Constructor                                                            //
   //-------------------------------------------------------------------------//
-  public FreshTextEnterAction( Socket     sendSocket ,
-                               JTextArea  freshTextArea ,
-                               JTextArea  historyTextArea ) {
+  public FreshTextEnterAction( Connection  dbConnection  ,
+                               Socket      sendSocket    ,
+                               JTextArea   freshTextArea ,
+                               JTextArea   historyTextArea ) {
     
-    sndSock   = sendSocket ;
-    freshText = freshTextArea ;
+    dbCon     = dbConnection    ;
+    sndSock   = sendSocket      ;
+    freshText = freshTextArea   ;
     history   = historyTextArea ;
     
   } //Constructor
@@ -38,15 +42,21 @@ public class FreshTextEnterAction extends AbstractAction {
     String txt = freshText.getText().trim();
     
     if (!"".equals( txt )) {
+      ChatMessage msg = new ChatMessage();
+        msg.id = UUIdUtil.makeNewUUID();
+        msg.from = ___;
+        msg.to   = ___;
+        msg.body = txt;
+      
+      msg = MessageSender.postMessage( sndSock, msg );
+      
+      DbMgr.storeMessage( dbCon, msg );
       
       String hist = history.getText();
-      
       hist = hist + "\r\n" + txt;
-      
       history.setText( hist );
       
       freshText.setText("");
-      
     } //if
     
   } //actionPerformed()

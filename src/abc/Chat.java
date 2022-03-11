@@ -33,7 +33,7 @@ public class Chat {
     
     Connection dbCon = connect_to_Client_DB();
     
-    List<String> arrContact = getList_of_Contacts();
+    List<Contact> arrContact = getList_of_Contacts();
     
     Properties props = readConfigFile();
     
@@ -41,10 +41,17 @@ public class Chat {
     String serverName = props.getProperty("ServerNameOrAddress");
     String serverPort = props.getProperty("ServerPort");
     
-    Socket rcvSock = connect_Receive_Socket( chatUser, serverName, serverPort );
-    Socket sndSock = connect_Send_Socket   ( chatUser, serverName, serverPort );
+    ColourScheme colourScheme = populateColourScheme( props );
     
-    GuiWin win = new GuiWin( dbCon, arrContact, rcvSock, sndSock );
+    Socket sndSock = connect_Send_Socket   ( chatUser, serverName, serverPort );
+    Socket rcvSock = connect_Receive_Socket( chatUser, serverName, serverPort );
+    
+    GuiWin win = new GuiWin( dbCon        ,
+                             chatUser     ,
+                             arrContact   ,
+                             colourScheme ,
+                             sndSock      ,
+                             rcvSock      );
     
     win.setVisible( true );
     
@@ -54,19 +61,6 @@ public class Chat {
     
     
   } //run()
-  
-  
-  
-  //-------------------------------------------------------------------------//
-  //  connect_Receive_Socket()                                               //
-  //-------------------------------------------------------------------------//
-  private Socket  connect_Receive_Socket( String  chatUser,
-                                          String  serverName,
-                                          String  serverPort ) throws Exception {
-    
-    return null;
-    
-  } //connect_Receive_Socket()
   
   
   //-------------------------------------------------------------------------//
@@ -79,6 +73,18 @@ public class Chat {
     return null;
     
   } //connect_Send_Socket()
+  
+  
+  //-------------------------------------------------------------------------//
+  //  connect_Receive_Socket()                                               //
+  //-------------------------------------------------------------------------//
+  private Socket  connect_Receive_Socket( String  chatUser,
+                                          String  serverName,
+                                          String  serverPort ) throws Exception {
+    
+    return null;
+    
+  } //connect_Receive_Socket()
   
   
   //-------------------------------------------------------------------------//
