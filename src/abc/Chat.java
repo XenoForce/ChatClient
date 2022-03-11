@@ -103,7 +103,7 @@ public class Chat {
   //-------------------------------------------------------------------------//
   //  getList_of_Contacts()                                                  //
   //-------------------------------------------------------------------------//
-  private List<String>  getList_of_Contacts() throws Exception {
+  private List<Contact>  getList_of_Contacts() throws Exception {
     
     File file = new File("contacts.txt");
     FileInputStream fis = new FileInputStream( file );
@@ -113,17 +113,27 @@ public class Chat {
     
     fis.close();
     
-    List<String> arrContact = new ArrayList<>();
+    //- - - - - - - - - - - - - - - - - - -
+    
+    List<Contact> arrContact = new ArrayList<>();
     
     IntStream iStream = IntStream.range( 1, 31 );
     
     IntConsumer iConsumer = a -> 
     {
-      String key = "Contact" + a;
-      String val = props.getProperty( key, "");
+      String keyName   = "Contact" + a;
+      String valName   = props.getProperty( keyName, "");
       
-      if (!"".equals(val)) {
-        arrContact.add( val );
+      String keyColour = "Colour_" + a;
+      String valColour = props.getProperty( keyColour );
+      
+      if (!"".equals( valName )) {
+        Contact contact = new Contact();
+          contact.contactName    = valName;
+          contact.fontColourName = valColour;
+          contact.fontColour     = ColourUtil.getColorObject( valColour );
+        
+        arrContact.add( contact );
       } //if
     };
     
@@ -148,6 +158,23 @@ public class Chat {
     
     return props;
   } //readConfigFile()
+  
+  
+  //-------------------------------------------------------------------------//
+  //  populateColourScheme()                                                 //
+  //-------------------------------------------------------------------------//
+  private ColourScheme populateColourScheme( Properties  props ) {
+    
+    ColourScheme retVal = new ColourScheme();
+    
+    retVal.textColour             = ColourUtil.getColorObject( props.getProperty("TextColour"));
+    retVal.textBackground         = ColourUtil.getColorObject( props.getProperty("TextBackground"));
+    
+    retVal.windowForegroundColour = ColourUtil.getColorObject( props.getProperty("WindowForegroundColour"));
+    retVal.windowBackgroundColour = ColourUtil.getColorObject( props.getProperty("WindowBackgroundColour"));
+    
+    return retVal;
+  } //populateColourScheme()
   
   
 } //class

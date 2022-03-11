@@ -8,9 +8,9 @@ public class Contact {
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  public String ContactName    ;
-  public String FontColourName ;
-  public Color  FontColour     ;
+  public String  contactName    ;
+  public String  fontColourName ;
+  public Color   fontColour     ;
   
   
 } //class

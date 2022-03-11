@@ -12,27 +12,30 @@ public class GuiWin extends JFrame {
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  private Connection    dbCon      ;
-  private String        chatUser   ;
-  private List<String>  arrContact ;
-  private Socket        rcvSock    ;
-  private Socket        sndSock    ;
+  private Connection     dbCon        ;
+  private String         chatUser     ;
+  private List<Contact>  arrContact   ;
+  private ColourScheme   colourScheme ;
+  private Socket         sndSock      ;
+  private Socket         rcvSock      ;
   
   
   //-------------------------------------------------------------------------//
   //  Constructor                                                            //
   //-------------------------------------------------------------------------//
-  public GuiWin( Connection    dbConnection ,
-                 String        theChatUser  ,
-                 List<String>  contactList  ,
-                 Socket        receiveSock  ,
-                 Socket        sendSock ) {
+  public GuiWin( Connection     dbConnection ,
+                 String         theChatUser  ,
+                 List<Contact>  contactList  ,
+                 ColourScheme   colourSet    ,
+                 Socket         sendSock     ,
+                 Socket         receiveSock  ) {
     
-    dbCon      = dbConnection ;
-    chatUser   = theChatUser  ;
-    arrContact = contactList  ;
-    rcvSock    = receiveSock  ;
-    sndSock    = sendSock     ;
+    dbCon        = dbConnection ;
+    chatUser     = theChatUser  ;
+    arrContact   = contactList  ;
+    colourScheme = colourSet    ;
+    sndSock      = sendSock     ;
+    rcvSock      = receiveSock  ;
     
     initComponents();
     
