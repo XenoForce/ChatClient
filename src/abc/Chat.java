@@ -3,6 +3,8 @@ package abc;
 import abc.bos.*;
 import abc.dbio.*;
 import abc.gui.*;
+import abc.json.JsonConnTypeUtil;
+import abc.netio.*;
 import abc.util.*;
 
 import java.io.*;
@@ -48,8 +50,10 @@ public class Chat {
     
     ColourScheme colourScheme = populateColourScheme( props );
     
-    Socket sndSock = connect_Send_Socket   ( chatUser, serverName, serverPort );
-    Socket rcvSock = connect_Receive_Socket( chatUser, serverName, serverPort );
+    int iPortNo = Server_PortNo_Util.getServerPortNo( serverPort );
+    
+    Socket sndSock = connect_Send_Socket   ( chatUser, serverName, iPortNo );
+    Socket rcvSock = connect_Receive_Socket( chatUser, serverName, iPortNo );
     
     getMessages_From_Client_DB( chatUser, mapContact, dbCon );
     
@@ -86,12 +90,43 @@ public class Chat {
   //-------------------------------------------------------------------------//
   //  connect_Send_Socket()                                                  //
   //-------------------------------------------------------------------------//
-  private Socket  connect_Send_Socket( String chatUser,
-                                       String serverName,
-                                       String serverPort ) throws Exception {
+  private Socket  connect_Send_Socket( String  chatUser,
+                                       String  serverName,
+                                       int     portNo ) throws Exception {
     
-    return null;
+    Socket retVal = null;
+    Socket sock   = new Socket( serverName, portNo );
     
+    OutputStream        outS = sock.getOutputStream();
+    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
+    
+    InputStream         inS  = sock.getInputStream();
+    ObjectInputStream   ois  = new ObjectInputStream( inS );
+    
+    ConnTypeRequest  req = new ConnTypeRequest();
+      req.chatUser       = chatUser;
+      req.connectionType = ConnectionTypes.ACTIVE_CLIENT;
+    
+    String sjReq = JsonConnTypeUtil.requestToJson( req );
+    
+    oos.writeObject( sjReq );
+    
+    Object obj = ois.readObject();
+    
+    if (obj instanceof String) {
+      String str = (String) obj;
+      ConnTypeResponse resp = JsonConnTypeUtil.jsonToResponse( str );
+      
+      if (null != resp) {
+        if (null != resp.theResponse) {
+          if (ResponseCodes.OK.equals( resp.theResponse )) {
+            retVal = sock;
+          } //if
+        } //if
+      } //if
+    } //if
+    
+    return retVal;
   } //connect_Send_Socket()
   
   
@@ -100,10 +135,41 @@ public class Chat {
   //-------------------------------------------------------------------------//
   private Socket  connect_Receive_Socket( String  chatUser,
                                           String  serverName,
-                                          String  serverPort ) throws Exception {
+                                          int     portNo ) throws Exception {
     
-    return null;
+    Socket retVal = null;
+    Socket sock   = new Socket( serverName, portNo );
     
+    OutputStream        outS = sock.getOutputStream();
+    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
+    
+    InputStream         inS  = sock.getInputStream();
+    ObjectInputStream   ois  = new ObjectInputStream( inS );
+    
+    ConnTypeRequest  req = new ConnTypeRequest();
+      req.chatUser       = chatUser;
+      req.connectionType = ConnectionTypes.PASSIVE_CLIENT;
+    
+    String sjReq = JsonConnTypeUtil.requestToJson( req );
+    
+    oos.writeObject( sjReq );
+    
+    Object obj = ois.readObject();
+    
+    if (obj instanceof String) {
+      String str = (String) obj;
+      ConnTypeResponse resp = JsonConnTypeUtil.jsonToResponse( str );
+      
+      if (null != resp) {
+        if (null != resp.theResponse) {
+          if (ResponseCodes.OK.equals( resp.theResponse )) {
+            retVal = sock;
+          } //if
+        } //if
+      } //if
+    } //if
+    
+    return retVal;
   } //connect_Receive_Socket()
   
   
