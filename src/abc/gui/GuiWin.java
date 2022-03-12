@@ -231,8 +231,8 @@ public class GuiWin extends JFrame {
     for (ChatMessage msg : theContact.arrMessage) {
       String sTime = MessageDateUtil.formatTimeStamp( msg.timeStamp );
       
-      sb.append( msg.from + "  (" + sTime + ")\r\n");
-      sb.append( msg.body + "\r\n");
+      sb.append( msg.sender + "  (" + sTime + ")\r\n");
+      sb.append( msg.body   + "\r\n");
       sb.append("\r\n");
     } //for
     

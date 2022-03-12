@@ -54,10 +54,10 @@ public class FreshTextEnterAction extends AbstractAction {
       Contact theContact = guiWin.currentContact;
       
       ChatMessage msg = new ChatMessage();
-        msg.id   = UUIdUtil.makeNewUUID();
-        msg.from = chatUser;
-        msg.to   = theContact.contactName;
-        msg.body = txt;
+        msg.id          = UUIdUtil.makeNewUUID();
+        msg.sender      = chatUser;
+        msg.destination = theContact.contactName;
+        msg.body        = txt;
       
       //msg = MessageSender.postMessage( sndSock, msg );
       

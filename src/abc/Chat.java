@@ -1,6 +1,7 @@
 package abc;
 
 import abc.bos.*;
+import abc.dbio.*;
 import abc.gui.*;
 import abc.util.*;
 
@@ -66,12 +67,17 @@ public class Chat {
   //-------------------------------------------------------------------------//
   //  getMessages_From_Client_DB()                                           //
   //-------------------------------------------------------------------------//
-  private void getMessages_From_Client_DB( String                chatUser    ,
-                                           Map<String, Contact>  allContacts ,
-                                           Connection            dbCon       ) {
-    
+  private void getMessages_From_Client_DB(
+      String                chatUser    ,
+      Map<String, Contact>  allContacts ,
+      Connection            dbCon       )
+  throws Exception
+  {
     for (Contact contact : allContacts.values()) {
-      //contact.arrMessage = 
+      contact.arrMessage = ClientDbMgr.getAllMessages_for_Contact(
+                                         chatUser,
+                                         contact.contactName,
+                                         dbCon );
     } //for
     
   } //getMessages_From_Client_DB()
