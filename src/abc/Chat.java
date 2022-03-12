@@ -1,5 +1,9 @@
 package abc;
 
+import abc.bos.*;
+import abc.gui.*;
+import abc.util.*;
+
 import java.io.*;
 import java.net.*;
 import java.sql.*;
@@ -46,6 +50,8 @@ public class Chat {
     Socket sndSock = connect_Send_Socket   ( chatUser, serverName, serverPort );
     Socket rcvSock = connect_Receive_Socket( chatUser, serverName, serverPort );
     
+    getMessages_From_Client_DB( chatUser, mapContact, dbCon );
+    
     GuiWin win = new GuiWin( dbCon        ,
                              chatUser     ,
                              mapContact   ,
@@ -54,13 +60,21 @@ public class Chat {
                              rcvSock      );
     
     win.setVisible( true );
-    
-    
-    //Move this to GUI windows:
-    //List<ChatMessage> arr = getMessages_From_Client_DB( dbCon );
-    
-    
   } //run()
+  
+  
+  //-------------------------------------------------------------------------//
+  //  getMessages_From_Client_DB()                                           //
+  //-------------------------------------------------------------------------//
+  private void getMessages_From_Client_DB( String                chatUser    ,
+                                           Map<String, Contact>  allContacts ,
+                                           Connection            dbCon       ) {
+    
+    for (Contact contact : allContacts.values()) {
+      //contact.arrMessage = 
+    } //for
+    
+  } //getMessages_From_Client_DB()
   
   
   //-------------------------------------------------------------------------//

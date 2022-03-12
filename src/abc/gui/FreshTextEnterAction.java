@@ -1,4 +1,7 @@
-package abc;
+package abc.gui;
+
+import abc.bos.*;
+import abc.util.*;
 
 import java.awt.event.ActionEvent;
 import java.net.Socket;
@@ -12,23 +15,29 @@ public class FreshTextEnterAction extends AbstractAction {
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
   private Connection  dbCon     ;
+  private String      chatUser  ;
   private Socket      sndSock   ;
-  private JTextArea   freshText ;
   private JTextArea   history   ;
+  private JTextArea   freshText ;
+  private GuiWin      guiWin    ;
   
   
   //-------------------------------------------------------------------------//
   //  Constructor                                                            //
   //-------------------------------------------------------------------------//
-  public FreshTextEnterAction( Connection  dbConnection  ,
-                               Socket      sendSocket    ,
-                               JTextArea   freshTextArea ,
-                               JTextArea   historyTextArea ) {
+  public FreshTextEnterAction( Connection  dbConnection    ,
+                               String      theChatUser     ,
+                               Socket      sendSocket      ,
+                               JTextArea   historyTextArea ,
+                               JTextArea   freshTextArea   ,
+                               GuiWin      theGuiWin       ) {
     
     dbCon     = dbConnection    ;
+    chatUser  = theChatUser     ;
     sndSock   = sendSocket      ;
-    freshText = freshTextArea   ;
     history   = historyTextArea ;
+    freshText = freshTextArea   ;
+    guiWin    = theGuiWin       ;
     
   } //Constructor
   
@@ -42,15 +51,21 @@ public class FreshTextEnterAction extends AbstractAction {
     String txt = freshText.getText().trim();
     
     if (!"".equals( txt )) {
+      Contact theContact = guiWin.currentContact;
+      
       ChatMessage msg = new ChatMessage();
-        msg.id = UUIdUtil.makeNewUUID();
-        //msg.from = ___;
-        //msg.to   = ___;
+        msg.id   = UUIdUtil.makeNewUUID();
+        msg.from = chatUser;
+        msg.to   = theContact.contactName;
         msg.body = txt;
       
       //msg = MessageSender.postMessage( sndSock, msg );
       
       //DbMgr.storeMessage( dbCon, msg );
+      
+      theContact.arrMessage.add( msg );
+      
+      // Update the GUI:
       
       String hist = history.getText();
       hist = hist + "\r\n" + txt;

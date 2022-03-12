@@ -1,4 +1,4 @@
-package abc;
+package abc.gui;
 
 import java.util.*;
 import javax.swing.AbstractListModel;

@@ -1,4 +1,6 @@
-package abc;
+package abc.netio;
+
+import abc.bos.*;
 
 import java.net.Socket;
 

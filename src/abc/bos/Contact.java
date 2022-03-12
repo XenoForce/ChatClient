@@ -1,18 +1,21 @@
-package abc;
+package abc.bos;
 
 import java.awt.Color;
+import java.util.*;
 
 
-public class ColourScheme {
+public class Contact {
   
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  public Color  textColour ;
-  public Color  textBackground ;
+  public String  contactName    ;
+  public String  fontColourName ;
+  public Color   fontColour     ;
   
-  public Color  windowForegroundColour ;
-  public Color  windowBackgroundColour ;
+  public List<ChatMessage>  arrMessage ;
+  
+  public String  draft = "";
   
   
 } //class

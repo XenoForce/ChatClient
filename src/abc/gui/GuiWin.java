@@ -1,4 +1,7 @@
-package abc;
+package abc.gui;
+
+import abc.bos.*;
+import abc.util.*;
 
 import java.awt.event.*;
 import java.net.*;
@@ -12,12 +15,13 @@ public class GuiWin extends JFrame {
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  private Connection            dbCon        ;
-  private String                chatUser     ;
-  private Map<String, Contact>  allContacts  ;
-  private ColourScheme          colourScheme ;
-  private Socket                sndSock      ;
-  private Socket                rcvSock      ;
+  private Connection            dbCon          ;
+  private String                chatUser       ;
+  private Map<String, Contact>  allContacts    ;
+  private ColourScheme          colourScheme   ;
+  private Socket                sndSock        ;
+  private Socket                rcvSock        ;
+  public  Contact               currentContact ;
   
   
   //-------------------------------------------------------------------------//
@@ -37,6 +41,7 @@ public class GuiWin extends JFrame {
     sndSock      = sendSock       ;
     rcvSock      = receiveSock    ;
     
+    
     initComponents();
     
     apply_Colour_Scheme();
@@ -44,9 +49,16 @@ public class GuiWin extends JFrame {
     setup_List_of_Contacts();
     
     
+    
+    
     // Trap when ENTER key is pressed:
     
-    FreshTextEnterAction freshTextEnterAction = new FreshTextEnterAction( dbCon, sndSock, freshText, history );
+    FreshTextEnterAction freshTextEnterAction = new FreshTextEnterAction( dbCon     ,
+                                                                          chatUser  ,
+                                                                          sndSock   ,
+                                                                          freshText ,
+                                                                          history   ,
+                                                                          this      );
     
     InputMap  iMap = freshText.getInputMap( freshText.WHEN_FOCUSED );
     ActionMap aMap = freshText.getActionMap();
@@ -97,6 +109,7 @@ public class GuiWin extends JFrame {
     
     ListModel<String> lstModel = new ContactListModel( new ArrayList( allContacts.keySet() ));
     nameList.setModel( lstModel );
+    nameList.setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
     
   } //setup_List_of_Contacts()
   
@@ -123,6 +136,11 @@ public class GuiWin extends JFrame {
 
     nameList.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
     nameList.setName(""); // NOI18N
+    nameList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+      public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+        nameListValueChanged(evt);
+      }
+    });
     jScrollPane1.setViewportView(nameList);
 
     history.setEditable(false);
@@ -179,7 +197,52 @@ public class GuiWin extends JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
-
+  
+  
+  private void nameListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_nameListValueChanged
+    
+    boolean bIsAdjusting = evt.getValueIsAdjusting();
+    
+    if (!bIsAdjusting) {
+      if (null != currentContact) {
+        currentContact.draft = freshText.getText();
+      } //if
+      
+      String selectedName = nameList.getSelectedValue();
+      System.out.println("To: " + selectedName );
+      
+      currentContact = allContacts.get( selectedName );
+      show_History_Messages( currentContact );
+      freshText.setText( currentContact.draft );
+      
+    } //if
+  }//GEN-LAST:event_nameListValueChanged
+  
+  
+  //-------------------------------------------------------------------------//
+  //  show_History_Messages()                                                //
+  //-------------------------------------------------------------------------//
+  private void show_History_Messages( Contact  theContact ) {
+    
+    history.setText("");
+    
+    StringBuilder sb = new StringBuilder();
+    
+    for (ChatMessage msg : theContact.arrMessage) {
+      String sTime = MessageDateUtil.formatTimeStamp( msg.timeStamp );
+      
+      sb.append( msg.from + "  (" + sTime + ")\r\n");
+      sb.append( msg.body + "\r\n");
+      sb.append("\r\n");
+    } //for
+    
+    String fullHistory = sb.toString();
+    
+    history.setText( fullHistory );
+    
+  } //show_History_Messages()
+  
+  
   /**
    * @param args the command line arguments
    */
