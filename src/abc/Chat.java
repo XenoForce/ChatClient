@@ -33,7 +33,7 @@ public class Chat {
     
     Connection dbCon = connect_to_Client_DB();
     
-    List<Contact> arrContact = getList_of_Contacts();
+    Map<String, Contact> mapContact = get_All_Contacts();
     
     Properties props = readConfigFile();
     
@@ -48,7 +48,7 @@ public class Chat {
     
     GuiWin win = new GuiWin( dbCon        ,
                              chatUser     ,
-                             arrContact   ,
+                             mapContact   ,
                              colourScheme ,
                              sndSock      ,
                              rcvSock      );
@@ -101,9 +101,9 @@ public class Chat {
   
   
   //-------------------------------------------------------------------------//
-  //  getList_of_Contacts()                                                  //
+  //  get_All_Contacts()                                                     //
   //-------------------------------------------------------------------------//
-  private List<Contact>  getList_of_Contacts() throws Exception {
+  private Map<String, Contact>  get_All_Contacts() throws Exception {
     
     File file = new File("contacts.txt");
     FileInputStream fis = new FileInputStream( file );
@@ -115,7 +115,7 @@ public class Chat {
     
     //- - - - - - - - - - - - - - - - - - -
     
-    List<Contact> arrContact = new ArrayList<>();
+    Map<String, Contact> mapContact = new TreeMap<>();
     
     IntStream iStream = IntStream.range( 1, 31 );
     
@@ -133,14 +133,14 @@ public class Chat {
           contact.fontColourName = valColour;
           contact.fontColour     = ColourUtil.getColorObject( valColour );
         
-        arrContact.add( contact );
+        mapContact.put( contact.contactName, contact );
       } //if
     };
     
     iStream.forEach( iConsumer );
     
-    return arrContact;
-  } //getList_of_Contacts()
+    return mapContact;
+  } //get_All_Contacts()
   
   
   //-------------------------------------------------------------------------//

@@ -44,13 +44,13 @@ public class FreshTextEnterAction extends AbstractAction {
     if (!"".equals( txt )) {
       ChatMessage msg = new ChatMessage();
         msg.id = UUIdUtil.makeNewUUID();
-        msg.from = ___;
-        msg.to   = ___;
+        //msg.from = ___;
+        //msg.to   = ___;
         msg.body = txt;
       
-      msg = MessageSender.postMessage( sndSock, msg );
+      //msg = MessageSender.postMessage( sndSock, msg );
       
-      DbMgr.storeMessage( dbCon, msg );
+      //DbMgr.storeMessage( dbCon, msg );
       
       String hist = history.getText();
       hist = hist + "\r\n" + txt;

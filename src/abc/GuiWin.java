@@ -12,37 +12,37 @@ public class GuiWin extends JFrame {
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  private Connection     dbCon        ;
-  private String         chatUser     ;
-  private List<Contact>  arrContact   ;
-  private ColourScheme   colourScheme ;
-  private Socket         sndSock      ;
-  private Socket         rcvSock      ;
+  private Connection            dbCon        ;
+  private String                chatUser     ;
+  private Map<String, Contact>  allContacts  ;
+  private ColourScheme          colourScheme ;
+  private Socket                sndSock      ;
+  private Socket                rcvSock      ;
   
   
   //-------------------------------------------------------------------------//
   //  Constructor                                                            //
   //-------------------------------------------------------------------------//
-  public GuiWin( Connection     dbConnection ,
-                 String         theChatUser  ,
-                 List<Contact>  contactList  ,
-                 ColourScheme   colourSet    ,
-                 Socket         sendSock     ,
-                 Socket         receiveSock  ) {
+  public GuiWin( Connection            dbConnection   ,
+                 String                theChatUser    ,
+                 Map<String, Contact>  allTheContacts ,
+                 ColourScheme          colourSet      ,
+                 Socket                sendSock       ,
+                 Socket                receiveSock ) {
     
-    dbCon        = dbConnection ;
-    chatUser     = theChatUser  ;
-    arrContact   = contactList  ;
-    colourScheme = colourSet    ;
-    sndSock      = sendSock     ;
-    rcvSock      = receiveSock  ;
+    dbCon        = dbConnection   ;
+    chatUser     = theChatUser    ;
+    allContacts  = allTheContacts ;
+    colourScheme = colourSet      ;
+    sndSock      = sendSock       ;
+    rcvSock      = receiveSock    ;
     
     initComponents();
     
-    // List of Contacts:
+    apply_Colour_Scheme();
     
-    ListModel<String> lstModel = new ContactListModel( arrContact );
-    nameList.setModel( lstModel );
+    setup_List_of_Contacts();
+    
     
     // Trap when ENTER key is pressed:
     
@@ -60,6 +60,45 @@ public class GuiWin extends JFrame {
     
     
   } //Constructor
+  
+  
+  //-------------------------------------------------------------------------//
+  //  apply_Colour_Scheme()                                                  //
+  //-------------------------------------------------------------------------//
+  private void apply_Colour_Scheme() {
+    
+    if (null != colourScheme.textColour) {
+      nameList .setForeground( colourScheme.textColour );
+      history  .setForeground( colourScheme.textColour );
+      freshText.setForeground( colourScheme.textColour );
+    } //if
+    
+    if (null != colourScheme.textBackground) {
+      nameList .setBackground( colourScheme.textBackground );
+      history  .setBackground( colourScheme.textBackground );
+      freshText.setBackground( colourScheme.textBackground );
+    } //if
+    
+    if (null != colourScheme.windowForegroundColour) {
+      setForeground( colourScheme.windowForegroundColour );
+    } //if
+    
+    if (null != colourScheme.windowBackgroundColour) {
+      setBackground( colourScheme.windowBackgroundColour );
+    } //if
+    
+  } //apply_Colour_Scheme()
+  
+  
+  //-------------------------------------------------------------------------//
+  //  setup_List_of_Contacts()                                               //
+  //-------------------------------------------------------------------------//
+  private void setup_List_of_Contacts() {
+    
+    ListModel<String> lstModel = new ContactListModel( new ArrayList( allContacts.keySet() ));
+    nameList.setModel( lstModel );
+    
+  } //setup_List_of_Contacts()
   
   
   /**
