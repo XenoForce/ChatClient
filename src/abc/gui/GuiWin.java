@@ -56,8 +56,8 @@ public class GuiWin extends JFrame {
     FreshTextEnterAction freshTextEnterAction = new FreshTextEnterAction( dbCon     ,
                                                                           chatUser  ,
                                                                           sndSock   ,
-                                                                          freshText ,
                                                                           history   ,
+                                                                          freshText ,
                                                                           this      );
     
     InputMap  iMap = freshText.getInputMap( freshText.WHEN_FOCUSED );

@@ -1,8 +1,11 @@
 package abc.gui;
 
 import abc.bos.*;
+import abc.dbio.*;
+import abc.netio.*;
 import abc.util.*;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.net.Socket;
 import java.sql.Connection;
@@ -59,19 +62,36 @@ public class FreshTextEnterAction extends AbstractAction {
         msg.destination = theContact.contactName;
         msg.body        = txt;
       
-      //msg = MessageSender.postMessage( sndSock, msg );
-      
-      //DbMgr.storeMessage( dbCon, msg );
-      
-      theContact.arrMessage.add( msg );
-      
-      // Update the GUI:
-      
-      String hist = history.getText();
-      hist = hist + "\r\n" + txt;
-      history.setText( hist );
-      
-      freshText.setText("");
+      try {
+        msg = MessageSender.postMessage( msg, sndSock );    //TimeStamp is assigned on the server.
+        msg.shown = true;
+        
+        ClientDbMgr.storeMessage( msg, dbCon );
+        
+        theContact.arrMessage.add( msg );
+        
+        // Update the GUI:
+        
+        //HistoryUtil.addMessage_to_History( msg, history );
+        
+        /*
+        String hist = history.getText();
+        hist = hist + "\r\n" + txt;
+        history.setText( hist );
+        */
+        
+        
+        freshText.setText("");
+      }
+      catch (Exception ex) {
+        Component  parent      = guiWin;
+        String     errMsg      = ex.toString();
+        String     title       = "ERROR";
+        int        optionType  = JOptionPane.OK_OPTION;
+        int        messageType = JOptionPane.ERROR_MESSAGE;
+        
+        JOptionPane.showConfirmDialog( parent, errMsg, title, optionType, messageType );
+      } //try
     } //if
     
   } //actionPerformed()

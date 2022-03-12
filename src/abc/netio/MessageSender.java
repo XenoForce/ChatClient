@@ -10,15 +10,18 @@ public class MessageSender {
   //-------------------------------------------------------------------------//
   //  postMessage()                                                          //
   //-------------------------------------------------------------------------//
-  public static void postMessage( Socket       sndSock,
-                                  ChatMessage  msg ) {
+  public static ChatMessage postMessage(
+      ChatMessage  msg ,
+      Socket       sndSock )
+  throws Exception
+  {
+    
+    
+    msg.timeStamp = new java.util.Date();
     
     
     
-    
-    
-    
-    
+    return msg;
   } //postMessage()
   
   
