@@ -66,7 +66,7 @@ public class FreshTextEnterAction extends AbstractAction {
         msg = MessageSender.postMessage( msg, sndSock );    //TimeStamp is assigned on the server.
         msg.shown = true;
         
-        ClientDbMgr.storeMessage( msg, dbCon );
+        CommonDbMgr.storeMessage( msg, dbCon );
         
         theContact.arrMessage.add( msg );
         
