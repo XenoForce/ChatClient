@@ -3,7 +3,7 @@ package abc;
 import abc.bos.*;
 import abc.dbio.*;
 import abc.gui.*;
-import abc.json.JsonConnTypeUtil;
+import abc.json.*;
 import abc.netio.*;
 import abc.util.*;
 
