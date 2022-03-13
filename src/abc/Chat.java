@@ -50,12 +50,12 @@ public class Chat {
     
     ColourScheme colourScheme = populateColourScheme( props );
     
+    getMessages_From_Client_DB( chatUser, mapContact, dbCon );
+    
     int iPortNo = Server_PortNo_Util.getServerPortNo( serverPort );
     
     Socket sndSock = connect_Send_Socket   ( chatUser, serverName, iPortNo );
     Socket rcvSock = connect_Receive_Socket( chatUser, serverName, iPortNo );
-    
-    getMessages_From_Client_DB( chatUser, mapContact, dbCon );
     
     GuiWin win = new GuiWin( dbCon        ,
                              chatUser     ,
@@ -71,12 +71,11 @@ public class Chat {
   //-------------------------------------------------------------------------//
   //  getMessages_From_Client_DB()                                           //
   //-------------------------------------------------------------------------//
-  private void getMessages_From_Client_DB(
-      String                chatUser    ,
-      Map<String, Contact>  allContacts ,
-      Connection            dbCon       )
-  throws Exception
-  {
+  private void getMessages_From_Client_DB( String                chatUser ,
+                                           Map<String, Contact>  allContacts ,
+                                           Connection            dbCon )
+                                    throws Exception {
+    
     for (Contact contact : allContacts.values()) {
       contact.arrMessage = ClientDbMgr.getAllMessages_for_Contact(
                                          chatUser,
@@ -180,7 +179,7 @@ public class Chat {
     
     Class.forName("org.hsqldb.jdbc.JDBCDriver" );
     
-    Connection con = DriverManager.getConnection("jdbc:hsqldb:file:chatdb", "SA", "");
+    Connection con = DriverManager.getConnection("jdbc:hsqldb:file:datadir/chatdb", "SA", "");
     
     return con;
   } //connect_to_Client_DB()
