@@ -93,22 +93,26 @@ public class Chat {
                                        String  serverName,
                                        int     portNo ) throws Exception {
     
-    Socket retVal = null;
-    Socket sock   = new Socket( serverName, portNo );
-    
-    OutputStream        outS = sock.getOutputStream();
-    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
-    
-    InputStream         inS  = sock.getInputStream();
-    ObjectInputStream   ois  = new ObjectInputStream( inS );
-    
     ConnTypeRequest  req = new ConnTypeRequest();
       req.chatUser       = chatUser;
       req.connectionType = ConnectionTypes.ACTIVE_CLIENT;
     
     String sjReq = JsonConnTypeUtil.requestToJson( req );
     
+    //- - - - - - -
+    
+    Socket retVal = null;
+    Socket sock   = new Socket( serverName, portNo );
+    
+    OutputStream        outS = sock.getOutputStream();
+    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
+    
     oos.writeObject( sjReq );
+    
+    //- - - - - - -
+    
+    InputStream         inS  = sock.getInputStream();
+    ObjectInputStream   ois  = new ObjectInputStream( inS );
     
     Object obj = ois.readObject();
     
@@ -136,22 +140,26 @@ public class Chat {
                                           String  serverName,
                                           int     portNo ) throws Exception {
     
-    Socket retVal = null;
-    Socket sock   = new Socket( serverName, portNo );
-    
-    OutputStream        outS = sock.getOutputStream();
-    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
-    
-    InputStream         inS  = sock.getInputStream();
-    ObjectInputStream   ois  = new ObjectInputStream( inS );
-    
     ConnTypeRequest  req = new ConnTypeRequest();
       req.chatUser       = chatUser;
       req.connectionType = ConnectionTypes.PASSIVE_CLIENT;
     
     String sjReq = JsonConnTypeUtil.requestToJson( req );
     
+    //- - - - - - -
+    
+    Socket retVal = null;
+    Socket sock   = new Socket( serverName, portNo );
+    
+    OutputStream        outS = sock.getOutputStream();
+    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
+    
     oos.writeObject( sjReq );
+    
+    //- - - - - - -
+    
+    InputStream         inS  = sock.getInputStream();
+    ObjectInputStream   ois  = new ObjectInputStream( inS );
     
     Object obj = ois.readObject();
     
