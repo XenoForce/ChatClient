@@ -1,6 +1,7 @@
 package abc.gui;
 
 import abc.bos.*;
+import abc.netio.*;
 import abc.util.*;
 
 import java.awt.event.*;
@@ -46,9 +47,9 @@ public class GuiWin extends JFrame {
     
     apply_Colour_Scheme();
     
+    HistoryUtil.initialize( history );
+    
     setup_List_of_Contacts();
-    
-    
     
     
     // Trap when ENTER key is pressed:
@@ -66,9 +67,11 @@ public class GuiWin extends JFrame {
     iMap.put( KeyStroke.getKeyStroke( KeyEvent.VK_ENTER, 0 ), "onEnter");
     aMap.put("onEnter", freshTextEnterAction );
     
-    //
     
+    // Start the Receive thread:
     
+    ReceiveThread rcvThread = new ReceiveThread( rcvSock );
+    rcvThread.start();
     
     
   } //Constructor
@@ -209,7 +212,6 @@ public class GuiWin extends JFrame {
       } //if
       
       String selectedName = nameList.getSelectedValue();
-      System.out.println("To: " + selectedName );
       
       currentContact = allContacts.get( selectedName );
       show_History_Messages( currentContact );
@@ -221,19 +223,24 @@ public class GuiWin extends JFrame {
   
   //-------------------------------------------------------------------------//
   //  show_History_Messages()                                                //
+  //
+  //  Replace this whole method with one call to HistoryUtil.add__()
+  //
+  //  (There is a need to be synchronized.)
+  //
   //-------------------------------------------------------------------------//
   private void show_History_Messages( Contact  theContact ) {
     
-    history.setText("");
+    //history.setText("");   //...unnecessary.
     
     StringBuilder sb = new StringBuilder();
     
     for (ChatMessage msg : theContact.arrMessage) {
       String sTime = MessageDateUtil.formatTimeStamp( msg.timeStamp );
-      
+        //  (must sandardize)
+      sb.append("\r\n");
       sb.append( msg.sender + "  (" + sTime + ")\r\n");
       sb.append( msg.body   + "\r\n");
-      sb.append("\r\n");
     } //for
     
     String fullHistory = sb.toString();

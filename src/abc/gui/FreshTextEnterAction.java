@@ -68,20 +68,21 @@ public class FreshTextEnterAction extends AbstractAction {
         
         CommonDbMgr.storeMessage( msg, dbCon );
         
-        theContact.arrMessage.add( msg );
+        theContact.arrMessage.add( msg );  //This can also be done by the listening thread. Need to be synchronized.
         
         // Update the GUI:
         
-        //HistoryUtil.addMessage_to_History( msg, history );
+        HistoryUtil.add_One_Msg_to_History( msg );
         
         /*
+        (Old code, ...before HistoryUtil.)
         String hist = history.getText();
         hist = hist + "\r\n" + txt;
         history.setText( hist );
         */
         
-        
         freshText.setText("");
+        freshText.requestFocus();
       }
       catch (Exception ex) {
         Component  parent      = guiWin;
