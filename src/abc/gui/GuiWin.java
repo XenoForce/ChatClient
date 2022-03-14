@@ -45,6 +45,9 @@ public class GuiWin extends JFrame {
     
     initComponents();
     
+    history  .setLineWrap( true );
+    freshText.setLineWrap( true );
+    
     apply_Colour_Scheme();
     
     HistoryUtil.initialize( history );
@@ -82,6 +85,15 @@ public class GuiWin extends JFrame {
   //-------------------------------------------------------------------------//
   private void apply_Colour_Scheme() {
     
+    /*
+    try {
+      UIManager.setLookAndFeel( (LookAndFeel) null );
+    }
+    catch (Exception ex) {
+      ex.printStackTrace( System.err );
+    } //try
+    */
+    
     if (null != colourScheme.textColour) {
       nameList .setForeground( colourScheme.textColour );
       history  .setForeground( colourScheme.textColour );
@@ -101,6 +113,40 @@ public class GuiWin extends JFrame {
     if (null != colourScheme.windowBackgroundColour) {
       setBackground( colourScheme.windowBackgroundColour );
     } //if
+    
+    
+    nameList .updateUI();
+    history  .updateUI();
+    freshText.updateUI();
+    
+    
+    //LookAndFeel laf = UIManager.getLookAndFeel();
+    
+    //UIDefaults defaults = laf.getDefaults();
+    
+    //UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+    
+    //defaults.put("TextArea.background", colourScheme.textBackground );
+    
+    //defaults.put("TextArea.background","javax.swing.plaf.ColorUIResource[r  =  200,g  =  21,b  =  24]");
+    //defaults.put("window"             ,"javax.swing.plaf.ColorUIResource[r  =  200,g  =  21,b  =  24]");
+    
+    /*
+    try {
+      UIManager.setLookAndFeel( laf );
+      
+      nameList .updateUI();
+      history  .updateUI();
+      freshText.updateUI();
+    }
+    catch (Exception ex) {
+      ex.printStackTrace( System.err );
+    } //try
+    */
+    
+    //javax.swing.plaf.ColorUIResource[r  =  200,g  =  221,b  =  242]
+    
+    //System.out.println( defaults );
     
   } //apply_Colour_Scheme()
   

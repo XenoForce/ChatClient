@@ -84,6 +84,7 @@ public class HistoryUtil {
       String hist = history.getText();
       hist = hist + "\r\n" + txtNew;
       history.setText( hist );
+      history.updateUI();
       
     } //add_One_Msg_to_History()
     
