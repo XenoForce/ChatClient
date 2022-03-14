@@ -41,7 +41,7 @@ public class HistoryUtil {
   public static void handle_New_Incoming_ChatMessage( ChatMessage  msg ) {
     
     synchronized( worker ) {
-      //worker.handle_New_Incoming_ChatMessage( msg );
+      worker.handle_New_Incoming_ChatMessage( msg );
     } //sychronize()
     
   } //handle_New_Incoming_ChatMessage()
@@ -87,6 +87,20 @@ public class HistoryUtil {
       history.updateUI();
       
     } //add_One_Msg_to_History()
+    
+    
+    //-------------------------------------------------------------------------//
+    //  handle_New_Incoming_ChatMessage()                                      //
+    //-------------------------------------------------------------------------//
+    private void handle_New_Incoming_ChatMessage( ChatMessage  msg ) {
+      
+      //ToDo: write to client DB.
+      
+      //ToDo: Add to Contacts structure.
+      
+      add_One_Msg_to_History( msg );
+      
+    } //handle_New_Incoming_ChatMessage()
     
     
   } //inner class
