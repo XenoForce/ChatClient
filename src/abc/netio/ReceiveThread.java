@@ -13,15 +13,15 @@ public class ReceiveThread extends Thread {
   //-------------------------------------------------------------------------//
   //  Attributes                                                             //
   //-------------------------------------------------------------------------//
-  private Socket  rcvSock ;
+  private ObjectInputStream  ois ;
   
   
   //-------------------------------------------------------------------------//
   //  Constructor                                                            //
   //-------------------------------------------------------------------------//
-  public ReceiveThread( Socket  receiveSock ) {
+  public ReceiveThread( ObjectInputStream  stream ) {
     
-    rcvSock = receiveSock;
+    ois = stream;
   } //Constructor
   
   
@@ -32,9 +32,6 @@ public class ReceiveThread extends Thread {
   public void run() {
     
     try {
-      InputStream        inS = rcvSock.getInputStream();
-      ObjectInputStream  ois = new ObjectInputStream( inS );
-      
       while (true) {
         Object obj = ois.readObject();
         

@@ -4,7 +4,9 @@ import abc.bos.*;
 import abc.netio.*;
 import abc.util.*;
 
+import java.awt.Component;
 import java.awt.event.*;
+import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.util.*;
@@ -21,7 +23,6 @@ public class GuiWin extends JFrame {
   private Map<String, Contact>  allContacts    ;
   private ColourScheme          colourScheme   ;
   private Socket                sndSock        ;
-  private Socket                rcvSock        ;
   public  Contact               currentContact ;
   
   
@@ -33,14 +34,14 @@ public class GuiWin extends JFrame {
                  Map<String, Contact>  allTheContacts ,
                  ColourScheme          colourSet      ,
                  Socket                sendSock       ,
-                 Socket                receiveSock ) {
+                 String                serverName     ,
+                 int                   serverPort ) {
     
     dbCon        = dbConnection   ;
     chatUser     = theChatUser    ;
     allContacts  = allTheContacts ;
     colourScheme = colourSet      ;
     sndSock      = sendSock       ;
-    rcvSock      = receiveSock    ;
     
     
     initComponents();
@@ -71,11 +72,33 @@ public class GuiWin extends JFrame {
     aMap.put("onEnter", freshTextEnterAction );
     
     
+    // Connect the Receiving socket:
+    
+    ObjectInputStream  ois = null;
+    
+    try {
+      ois = ReceiveConnectionMgr.connect_Receiving_Object_Stream( chatUser,
+                                                                  serverName,
+                                                                  serverPort );
+    }
+    catch (Exception ex) {
+      ex.printStackTrace( System.err );
+      ois = null;
+      
+      Component  parent      = this;
+      String     errMsg      = "Error connecting object receiving socket connection.\r\n\r\n" + ex.toString();
+      String     title       = "ERROR";
+      int        messageType = JOptionPane.ERROR_MESSAGE;
+      
+      JOptionPane.showMessageDialog( parent, errMsg, title, messageType );
+    } //try
+    
     // Start the Receive thread:
     
-    ReceiveThread rcvThread = new ReceiveThread( rcvSock );
-    rcvThread.start();
-    
+    if (null != ois) {
+      ReceiveThread rcvThread = new ReceiveThread( ois );
+      rcvThread.start();
+    } //if
     
   } //Constructor
   

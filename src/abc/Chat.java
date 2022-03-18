@@ -54,15 +54,15 @@ public class Chat {
     
     int iPortNo = Server_PortNo_Util.getServerPortNo( serverPort );
     
-    Socket sndSock = connect_Send_Socket   ( chatUser, serverName, iPortNo );
-    Socket rcvSock = connect_Receive_Socket( chatUser, serverName, iPortNo );
+    Socket sndSock = connect_Send_Socket( chatUser, serverName, iPortNo );
     
     GuiWin win = new GuiWin( dbCon        ,
                              chatUser     ,
                              mapContact   ,
                              colourScheme ,
                              sndSock      ,
-                             rcvSock      );
+                             serverName   ,
+                             iPortNo      );
     
     win.setVisible( true );
   } //run()
@@ -131,53 +131,6 @@ public class Chat {
     
     return retVal;
   } //connect_Send_Socket()
-  
-  
-  //-------------------------------------------------------------------------//
-  //  connect_Receive_Socket()                                               //
-  //-------------------------------------------------------------------------//
-  private Socket  connect_Receive_Socket( String  chatUser,
-                                          String  serverName,
-                                          int     portNo ) throws Exception {
-    
-    ConnTypeRequest  req = new ConnTypeRequest();
-      req.chatUser       = chatUser;
-      req.connectionType = ConnectionTypes.PASSIVE_CLIENT;
-    
-    String sjReq = JsonConnTypeUtil.requestToJson( req );
-    
-    //- - - - - - -
-    
-    Socket retVal = null;
-    Socket sock   = new Socket( serverName, portNo );
-    
-    OutputStream        outS = sock.getOutputStream();
-    ObjectOutputStream  oos  = new ObjectOutputStream( outS );
-    
-    oos.writeObject( sjReq );
-    
-    //- - - - - - -
-    
-    InputStream         inS  = sock.getInputStream();
-    ObjectInputStream   ois  = new ObjectInputStream( inS );
-    
-    Object obj = ois.readObject();
-    
-    if (obj instanceof String) {
-      String str = (String) obj;
-      ConnTypeResponse resp = JsonConnTypeUtil.jsonToResponse( str );
-      
-      if (null != resp) {
-        if (null != resp.theResponse) {
-          if (ResponseCodes.OK.equals( resp.theResponse )) {
-            retVal = sock;
-          } //if
-        } //if
-      } //if
-    } //if
-    
-    return retVal;
-  } //connect_Receive_Socket()
   
   
   //-------------------------------------------------------------------------//

@@ -88,10 +88,9 @@ public class FreshTextEnterAction extends AbstractAction {
         Component  parent      = guiWin;
         String     errMsg      = ex.toString();
         String     title       = "ERROR";
-        int        optionType  = JOptionPane.OK_OPTION;
         int        messageType = JOptionPane.ERROR_MESSAGE;
         
-        JOptionPane.showConfirmDialog( parent, errMsg, title, optionType, messageType );
+        JOptionPane.showMessageDialog( parent, errMsg, title, messageType );
       } //try
     } //if
     
