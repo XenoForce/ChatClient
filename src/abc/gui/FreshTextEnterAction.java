@@ -63,7 +63,7 @@ public class FreshTextEnterAction extends AbstractAction {
         msg.body        = txt;
       
       try {
-        msg = MessageSender.postMessage( msg, sndSock );    //TimeStamp is assigned on the server.
+        msg = RequestSender.postMessage( msg, sndSock );    //TimeStamp is assigned on the server.
         msg.shown = true;
         
         CommonDbMgr.storeMessage( msg, dbCon );

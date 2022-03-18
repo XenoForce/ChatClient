@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.Socket;
 
 
-public class MessageSender {
+public class RequestSender {
   
   //-------------------------------------------------------------------------//
   //  postMessage()                                                          //
@@ -22,6 +22,7 @@ public class MessageSender {
     OutputStream        outS = sndSock.getOutputStream();
     ObjectOutputStream  oos  = new ObjectOutputStream( outS );
     
+    oos.writeObject( RequestTypes.PROCESS_ONE_NEW_MSG );
     oos.writeObject( json );
     
     //- - - - - - -
